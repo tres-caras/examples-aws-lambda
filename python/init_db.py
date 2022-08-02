@@ -2,6 +2,7 @@ import os
 import logging
 import random
 from math import floor
+import psycopg2
 from psycopg2.pool import SimpleConnectionPool
 
 logger = logging.getLogger()
@@ -9,9 +10,10 @@ logger.setLevel(logging.INFO)
 
 pool = None
 
-
 def create_accounts(p, n):
-    conn = p.getconn()
+    #Connect to your postgres DB
+    # conn = psycopg2.connect("dbname=defaultdb user=diego")
+    conn = psycopg2.connect(os.environ["DATABASE_URL"])
     with conn.cursor() as cur:
         cur.execute(
             "CREATE TABLE IF NOT EXISTS accounts (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), balance INT8)")
